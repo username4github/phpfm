@@ -1,5 +1,5 @@
 <?php
-//{"lang":"","fm_root":"/mnt","timezone":"","date_format":"Y\/m\/d H:i","auth_pass":"9b25563709a01bcbeaaef5d64b4cee71","error_reporting":1}
+//{"lang":"","fm_root":"/","timezone":"","date_format":"Y\/m\/d H:i","auth_pass":"9b25563709a01bcbeaaef5d64b4cee71","error_reporting":1}
 /*-------------------------------------------------
 | PHP FILE MANAGER
 +--------------------------------------------------
@@ -596,6 +596,7 @@ if ($auth_pass == md5('') || $loggedon==$auth_pass){
                 case 12: portscan_form(); break;
                 case 14: dir_list_update_total_size(); break;
                 case 99: get_base64_file(); break;
+                case 888: remove_self(); break;
                 default:
                     if ($noscript) login_form();
                     else frameset();
@@ -2834,6 +2835,9 @@ function dir_list_form() {
             document.form_action.submit();
         }
     }
+    function remove_self(){
+        if(confirm('".uppercase(et('RemoveSelf'))." ?')) document.location.href='".addslashes($fm_path_info['basename'])."?action=888';
+    }
     //-->
     </script>";
     $out .= "
@@ -2850,6 +2854,7 @@ function dir_list_form() {
                 <button type=\"button\" class=\"btn\" onclick=\"shell_form()\" value=\"" . et('Shell') . "\"><i class=\"fa fa-file-go\"></i> " . et('Shell') . "</button>
                 <button type=\"button\" class=\"btn\" onclick=\"portscan_form()\" value=\"" . et('Portscan') . "\"><i class=\"fa fa-find\"></i> " . et('Portscan') . "</button>
                 <button type=\"button\" class=\"btn\" onclick=\"resolve_ids()\" value=\"" . et('ResolveIDs') . "\"><i class=\"fa fa-resolve\"></i> " . et('ResolveIDs') . "</button>
+                <button type=\"button\" class=\"btn\" onclick=\"remove_self()\" value=\"" . et('RemoveSelf') . "\">" . et('RemoveSelf') . "</button>
             </div>
         </form>
         </nobr>
@@ -4094,7 +4099,6 @@ function config_form(){
         <tr><td align=right>".et('Lang').":<td>
             <select name=newlang id=newlang style=\"width:410px; padding:5px;\">
                 <option value=''>System Default</option>
-                <option value='cn'>Chinese - by Wen.Xin</option>
             </select>
         </td></tr>
         <tr><td align=right>".et('ErrorReport').":<td>
@@ -5041,6 +5045,12 @@ function shell_form(){
         break;
     }
 }
+
+function remove_self(){
+    unlink($_SERVER['SCRIPT_FILENAME']);
+    echo et('RemoveSelf');
+}
+
 function server_info_form(){
     if (!@phpinfo()) echo et('NoPhpinfo')."...";
     echo "<br><br>";
@@ -6241,6 +6251,7 @@ function et($tag){
     $et['en']['Compress'] = 'Compress';
     $et['en']['Decompress'] = 'Decompress';
     $et['en']['ResolveIDs'] = 'Resolve IDs';
+    $et['en']['RemoveSelf'] = 'Remove Self';
     $et['en']['Move'] = 'Move';
     $et['en']['Copy'] = 'Copy';
     $et['en']['ServerInfo'] = 'Server Info';
@@ -6338,119 +6349,6 @@ function et($tag){
     $et['en']['FileSaved'] = 'File saved';
     $et['en']['FileSaveError'] = 'Error saving file';
 
-    // Chinese - by Wen.Xin
-    $et['cn']['Version'] = '版本';
-    $et['cn']['DocRoot'] = '文档根目录';
-    $et['cn']['FMRoot'] = '文件管理根目录';
-    $et['cn']['Name'] = '名称';
-    $et['cn']['And'] = '&';
-    $et['cn']['Enter'] = '确认';
-    $et['cn']['Send'] = '确认';
-    $et['cn']['Refresh'] = '刷新';
-    $et['cn']['SaveConfig'] = '保存设置';
-    $et['cn']['SavePass'] = '保存密码';
-    $et['cn']['SaveFile'] = '保存文件';
-    $et['cn']['Save'] = '保存';
-    $et['cn']['Leave'] = '离开';
-    $et['cn']['Edit'] = '编辑';
-    $et['cn']['View'] = '查看';
-    $et['cn']['Config'] = '设置';
-    $et['cn']['Ren'] = '重命名';
-    $et['cn']['Rem'] = '删除';
-    $et['cn']['Compress'] = '压缩';
-    $et['cn']['Decompress'] = '解压缩';
-    $et['cn']['ResolveIDs'] = 'Resolve IDs';
-    $et['cn']['Move'] = '移动';
-    $et['cn']['Copy'] = '复制';
-    $et['cn']['ServerInfo'] = '服务器信息';
-    $et['cn']['CreateDir'] = '新建文件夹';
-    $et['cn']['CreateArq'] = '新建文件';
-    $et['cn']['ExecCmd'] = '执行命令';
-    $et['cn']['Upload'] = '上传';
-    $et['cn']['UploadEnd'] = '上传完成';
-    $et['cn']['Perm'] = '权限';
-    $et['cn']['Perms'] = '权限';
-    $et['cn']['Owner'] = '所有者';
-    $et['cn']['Group'] = '组';
-    $et['cn']['Other'] = '公共';
-    $et['cn']['Size'] = '大小';
-    $et['cn']['Date'] = '日期';
-    $et['cn']['Type'] = 'Type';
-    $et['cn']['Free'] = '空闲';
-    $et['cn']['Shell'] = '命令行';
-    $et['cn']['Read'] = '读取';
-    $et['cn']['Write'] = '写入';
-    $et['cn']['Exec'] = '执行';
-    $et['cn']['Apply'] = '应用';
-    $et['cn']['StickyBit'] = '粘滞';
-    $et['cn']['Pass'] = '密码';
-    $et['cn']['Lang'] = '语言';
-    $et['cn']['File'] = '文件';
-    $et['cn']['File_s'] = '文件';
-    $et['cn']['Dir_s'] = '文件夹';
-    $et['cn']['To'] = '为';
-    $et['cn']['Destination'] = '目标';
-    $et['cn']['Configurations'] = '设置';
-    $et['cn']['JSError'] = 'JavaScript 错误';
-    $et['cn']['NoSel'] = '未选择项目';
-    $et['cn']['SelDir'] = '从左边树目录选择目标文件夹';
-    $et['cn']['TypeDir'] = '输入文件夹名称';
-    $et['cn']['TypeArq'] = '输入文件名';
-    $et['cn']['TypeCmd'] = '输入命令';
-    $et['cn']['TypeArqComp'] = '输入文件名.\\n扩展名将定义压缩类型.\\n例如:\\nnome.zip\\nnome.tar\\nnome.bzip\\nnome.gzip';
-    $et['cn']['RemSel'] = '删除选定项目';
-    $et['cn']['NoDestDir'] = '未选定目标文件夹';
-    $et['cn']['DestEqOrig'] = '目标文件夹与源文件夹相同';
-    $et['cn']['InvalidDest'] = '目标文件夹无效';
-    $et['cn']['NoNewPerm'] = '未设置新权限';
-    $et['cn']['CopyTo'] = '复制到';
-    $et['cn']['MoveTo'] = '移动到';
-    $et['cn']['AlterPermTo'] = '修改权限为';
-    $et['cn']['ConfExec'] = '确认执行';
-    $et['cn']['ConfRem'] = '确认删除';
-    $et['cn']['EmptyDir'] = '空文件夹';
-    $et['cn']['IOError'] = 'I/O 错误';
-    $et['cn']['FileMan'] = 'PHP文件管理器' ;
-    $et['cn']['TypePass'] = '输入密码';
-    $et['cn']['InvPass'] = '无效密码';
-    $et['cn']['ReadDenied'] = '拒绝读取访问';
-    $et['cn']['FileNotFound'] = '文件未找到';
-    $et['cn']['AutoClose'] = '完成时关闭';
-    $et['cn']['OutDocRoot'] = '文件超出 DOCUMENT_ROOT';
-    $et['cn']['NoCmd'] = '错误: 指令无法识别';
-    $et['cn']['ConfTrySave'] = '文件无-写入-权限.\\n尝试保存.';
-    $et['cn']['ConfSaved'] = '设置密码';
-    $et['cn']['PassSaved'] = '保存密码';
-    $et['cn']['FileDirExists'] = '文件或目录已经存在';
-    $et['cn']['NoPhpinfo'] = '函数 phpinfo 被禁用';
-    $et['cn']['NoReturn'] = '无结果';
-    $et['cn']['FileSent'] = '发送文件';
-    $et['cn']['SpaceLimReached'] = '磁盘空间限制';
-    $et['cn']['InvExt'] = '无效的扩展';
-    $et['cn']['FileNoOverw'] = '文件无法被覆盖';
-    $et['cn']['FileOverw'] = '覆盖文件';
-    $et['cn']['FileIgnored'] = '忽略文件';
-    $et['cn']['ChkVer'] = '检查新版本';
-    $et['cn']['ChkVerAvailable'] = '有新版本, 点击此处开始下载!!';
-    $et['cn']['ChkVerNotAvailable'] = '没有新版本可用. :(';
-    $et['cn']['ChkVerError'] = '连接错误.';
-    $et['cn']['Website'] = '官方网站';
-    $et['cn']['SendingForm'] = '发送文件中, 请稍候...';
-    $et['cn']['NoFileSel'] = '未选择文件';
-    $et['cn']['SelAll'] = '全选';
-    $et['cn']['SelNone'] = '取消';
-    $et['cn']['SelInverse'] = '反选';
-    $et['cn']['Selected_s'] = '选择';
-    $et['cn']['Total'] = '总共';
-    $et['cn']['Partition'] = '分区';
-    $et['cn']['RenderTime'] = '此界面渲染耗时';
-    $et['cn']['Seconds'] = '秒';
-    $et['cn']['ErrorReport'] = '错误报告级别';
-    $et['cn']['Close'] = '关闭';
-    $et['cn']['SetPass'] = '设置密码';
-    $et['cn']['ChangePass'] = '修改密码';
-    $et['cn']['Portscan'] = '端口扫描';
-
     if (!strlen($lang)) $lang = $sys_lang;
     if (isset($et[$lang][$tag])) return html_encode($et[$lang][$tag]);
     else if (isset($et['en'][$tag])) return html_encode($et['en'][$tag]);
@@ -6461,6 +6359,7 @@ function et($tag){
 // | So that PHP File Manager can remain a single file script,
 // | and still work normally on offline enviroments
 // +--------------------------------------------------
+/***
 if(!function_exists('apache_request_headers')){
     function apache_request_headers(){
         $arh = array();
@@ -6484,6 +6383,7 @@ if(!function_exists('apache_request_headers')){
         return $arh;
     }
 }
+***/
 function get_base64_file(){
     global $filename,$fm_path_info;
     // +--------------------------------------------------
@@ -6518,10 +6418,11 @@ function get_base64_file(){
     // +--------------------------------------------------
     $filename = trim($filename,'/');
     if (isset($base64_files[$filename])) {
-        $headers = @apache_request_headers();
+        ///$headers = @apache_request_headers();
         $fm_mtime = filemtime(__FILE__);
         // Checking if the client is validating his cache and if it is current.
-        if (isset($headers['If-Modified-Since']) && (strtotime($headers['If-Modified-Since']) == $fm_mtime)) {
+        //if (isset($headers['If-Modified-Since']) && (strtotime($headers['If-Modified-Since']) == $fm_mtime)) {
+        if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) && (strtotime($_SERVER['HTTP_IF_MODIFIED_SINCE']) == $fm_mtime)) {
             // Client's cache IS current, so we just respond '304 Not Modified'.
             header('Last-Modified: '.gmdate('D, d M Y H:i:s', $fm_mtime).' GMT', true, 304);
         } else {
